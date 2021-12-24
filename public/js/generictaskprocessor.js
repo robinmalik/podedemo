@@ -45,7 +45,7 @@ $(document).ready(() =>
         // Handle the initial task list when running:
         if(message.data.name == 'initialtasklist' && message.data.state == 'running')
         {
-            $('#tasklistbutton').text('Starting...')
+            $('#tasklistbutton').html('<strong>Starting...</strong>')
 
             // Add table:
             $('#tasklistoutput').html(message.taskarraytohtml)
@@ -58,12 +58,12 @@ $(document).ready(() =>
             // If the object has a state property of completed, then the task script has finished.
             if(message.data.status == 'success')
             {
-                $('#tasklistbutton').text('Finished')
+                $('#tasklistbutton').html('<strong>Finished</strong>&nbsp;😄')
                 //$('#tasklist').collapse("hide");
             }
             else if(message.data.status == 'fail')
             {
-                $('#tasklistbutton').text('Finished with errors :(')
+                $('#tasklistbutton').html('<strong>Finished with errors :(</strong>')
             }
             else
             {
