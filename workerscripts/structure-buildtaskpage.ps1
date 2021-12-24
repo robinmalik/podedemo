@@ -2,6 +2,9 @@
 # Note use of `r`n at the end of Write-Output lines, and also specific levels of tabbed indentation.
 # This is so that HTML is rendered nicely when viewing the source code (helps debugging).
 
+# At some point we may just have a singular function to build the entire page but for the moment
+# I'm making it a little modular to retain some sense of structure in the .pode document
+
 function BuildHead($PageTitle)
 {
 	Write-Output "<title>$($PageTitle)</title>`r`n"
