@@ -5,10 +5,10 @@
 
 ### Summary of Demo:
 
-> Provides a webserver that listens on both HTTP and Websockets.
-> Client application (e.g. browser) can make an initial connection over HTTP. Included JavaScript opens a websocket to the server.
-> Form data is posted over the websocket.
-> This triggers a backend script that makes HTTP POST requests to the server, which then relays JSON data over the websocket to the client. Custom javascript decides on how this is rendered in theb browser.
+> * Provides a webserver that listens on both HTTP and Websockets.<br>
+> * Client application (e.g. browser) can make an initial connection over HTTP. Included JavaScript opens a websocket to the server.<br>
+> * Form data is posted over the websocket.<br>
+> * This triggers a backend script that makes (internal) HTTP POST requests to the server, which then relays JSON data over the websocket to the client. Custom javascript decides on how this is rendered in theb browser.
 
 ### Prereqs:
 
