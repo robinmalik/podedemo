@@ -1,6 +1,7 @@
 $(document).ready(() =>
 {
-    var pagename = location.href.split("/").slice(-1)
+    //var pagename = location.href.split("/").slice(-1)
+    var pagename = location.href.split("/").slice(-1)[ 0 ].split('?')[ 0 ]
 
     function getCookie(name)
     {
@@ -10,26 +11,27 @@ $(document).ready(() =>
     }
 
     // Bind submit on the form to send message to the server
-    $('#form').submit(function(e)
+    var formselector = "form[name='" + pagename + "']"
+    $(formselector).submit(function(e)
     {
+        console.log('Form submission triggered')
         let cookie = getCookie('pode.sid')
-
         e.preventDefault()
-
         var msg = {
             sessionid: cookie,
             message: 'submitting over websocket',
             date: Date.now(),
             path: "/" + pagename,
-            formdata: $("#form").serialize(),
+            formdata: $(formselector).serialize(),
             direct: true
         }
         ws.send(JSON.stringify(msg))
+        $("#submit").addClass('disabled')
     })
 
 
     // Create the websocket (note this is hardcoded to a specific path at the moment):
-    var ws = new WebSocket("ws://localhost:8091/get-user-details")
+    var ws = new WebSocket("ws://localhost:8091/" + pagename)
 
     // Event to receive inbound websocket messages:
     ws.onmessage = function(evt)
