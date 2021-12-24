@@ -6,7 +6,7 @@
 		FileMonitor = @{
 			Enable  = $true
 			Include = @("*.ps1")
-			Exclude = @("logs/*", "public/*", "exampledata/*", "structure-buildtaskpage.ps1")
+			Exclude = @("logs/*", "public/*", "exampledata/*", "workerscripts/structure-buildtaskpage.ps1")
 		}
 	}
 	Web         = @{
