@@ -151,21 +151,23 @@ function BuildForm($PageData)
 function BuildAccordian()
 {
 	Write-Output "				<div class=`"accordion`" id=`"accordionExample`">`r`n"
+
 	Write-Output "					<div class=`"accordion-item`">`r`n"
 	Write-Output "						<h2 class=`"accordion-header`" id=`"headingOne`">`r`n"
-	Write-Output "							<button id=`"tasklistbutton`" class=`"accordion-button collapsed`" type=`"button`" data-bs-toggle=`"collapse`" data-bs-target=`"#collapseOne`" aria-expanded=`"false`" aria-controls=`"collapseOne`">`r`n"
+	Write-Output "							<button id=`"tasklistbutton`" class=`"accordion-button collapsed`" type=`"button`" data-bs-toggle=`"collapse`" data-bs-target=`"#tasklistbody`" aria-expanded=`"false`" aria-controls=`"tasklistbody`">`r`n"
 	Write-Output "								...`r`n"
 	Write-Output "							</button>`r`n"
 	Write-Output "						</h2>`r`n"
 	Write-Output "						<div id=`"tasklistbody`" class=`"accordion-collapse collapse`" aria-labelledby=`"headingOne`" data-bs-parent=`"#accordionExample`">`r`n"
 	Write-Output "							<div class=`"accordion-body`">`r`n"
-	Write-Output "								<div id='tasklistoutput'></div>`r`n"
+	Write-Output "								<div id='tasklistoutput'>sdfsdfsdf</div>`r`n"
 	Write-Output "							</div>`r`n"
 	Write-Output "						</div>`r`n"
 	Write-Output "					</div>`r`n"
+
 	Write-Output "					<div class=`"accordion-item`">`r`n"
 	Write-Output "						<h2 class=`"accordion-header`" id=`"headingTwo`">`r`n"
-	Write-Output "							<button id=`"outputbutton`" class=`"accordion-button collapsed`" type=`"button`" data-bs-toggle=`"collapse`" data-bs-target=`"#collapseTwo`" aria-expanded=`"false`" aria-controls=`"collapseTwo`">`r`n"
+	Write-Output "							<button id=`"outputbutton`" class=`"accordion-button collapsed`" type=`"button`" data-bs-toggle=`"collapse`" data-bs-target=`"#outputbody`" aria-expanded=`"false`" aria-controls=`"outputbody`">`r`n"
 	Write-Output "							</button>`r`n"
 	Write-Output "						</h2>`r`n"
 	Write-Output "						<div id=`"outputbody`" class=`"accordion-collapse collapse`" aria-labelledby=`"headingTwo`" data-bs-parent=`"#accordionExample`">`r`n"

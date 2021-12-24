@@ -31,7 +31,7 @@ $BuildTaskPageFile = Join-Path -Path $(Join-Path -Path $AppRoot -ChildPath "work
 				)
 			</div>
 
-			<div id="divaccordion" class="bg-light pe-5 ps-5 rounded">
+			<div id="accordiondiv" class="bg-light pe-5 ps-5 pb-5 rounded">
 				$(
 				BuildAccordian
 				)
