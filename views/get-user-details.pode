@@ -18,50 +18,23 @@ $BuildTaskPageFile = Join-Path -Path $(Join-Path -Path $AppRoot -ChildPath "work
 		$(
 		BuildNav $((Get-PodeConfig).WebSiteName)
 		)
+
+
 		<main class="container">
 			<div class="bg-light pt-5 pe-5 ps-5 rounded">
 				<h1>$($PageData.PageTitle)</h1><br>
 			</div>
 
 			<div id="formdiv" class="bg-light pe-5 ps-5 rounded">
-				<form id='form'>
-					<div class="form-group row">
-						<label for="inputEmail3" class="col-sm-2 col-form-label">Username</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" name="inputusername" id="inputusername" placeholder="Username">
-						</div>
-					</div>
-					<br>
-					<button id="dostuff" type="submit" class="btn btn-primary">Submit</button><br><br>
-				</form>
+				$(
+				BuildForm $PageData
+				)
 			</div>
 
 			<div id="divaccordion" class="bg-light pe-5 ps-5 rounded">
-				<div class="accordion" id="accordionExample">
-					<div class="accordion-item">
-						<h2 class="accordion-header" id="headingOne">
-							<button id="tasklistbutton" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-								...
-							</button>
-						</h2>
-						<div id="tasklistbody" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-							<div class="accordion-body">
-								<div id='tasklistoutput'></div>
-							</div>
-						</div>
-					</div>
-					<div class="accordion-item">
-						<h2 class="accordion-header" id="headingTwo">
-							<button id="outputbutton" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-							</button>
-						</h2>
-						<div id="outputbody" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-							<div class="accordion-body">
-								<div id='output'></div>
-							</div>
-						</div>
-					</div>
-				</div>
+				$(
+				BuildAccordian
+				)
 			</div>
 		</main>
 		<script src="/js/bootstrap.bundle.min.js"></script>
