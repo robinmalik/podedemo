@@ -76,6 +76,7 @@ return {
 
 	# Write some data for the "output" box?
 	$Output = [PSCustomObject]@{
+		'clientid'    = $ClientId
 		'output'      = 'We finished getting the user details you asked for.'
 		'htmlenabled' = $true
 	}
