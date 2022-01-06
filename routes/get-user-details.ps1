@@ -9,23 +9,10 @@ Add-PodeRoute -Method Get -Path '/get-user-details' -ScriptBlock {
 Add-PodeSignalRoute -Path '/get-user-details' -ScriptBlock {
 	"$($SignalEvent.Path) invoked with method: $($SignalEvent.Route.Method), client ID $($SignalEvent.ClientID) session ID $($SignalEvent.Request.Body.sessionid)" | Out-Default
 
-	#$SignalEvent.Request.Body | Out-File "SignalEvent.Request.Body.json" -Force
-
-	Lock-PodeObject -ScriptBlock {
-		# attempt to get the hashtable from the state
-		$ClientIDs = (Get-PodeState -Name 'ClientIDs')
-		if($ClientIDs -notcontains $SignalEvent.ClientID)
-		{
-			$ClientIDs.IDs += $SignalEvent.ClientID
-		}
-		Save-PodeState -Path './state.json'
-	}
-
-	Invoke-PodeSchedule -Name 'get-user-details'
-
 	#Region comments
 	# $SignalEvent is built in. Pode puts any data received into a subproperty called .Data
-	#$SignalEvent | Out-Default
+	#$SignalEvent.Request | Out-Default
+	#$SignalEvent.Request.Body | Out-File "SignalEvent.Request.Body.json" -Force
 	# For an example of the kind of data received see 'exampledata/SignalEvent.json'
 
 	<#
@@ -36,6 +23,22 @@ Add-PodeSignalRoute -Path '/get-user-details' -ScriptBlock {
 		$SignalEvent.Request.Host: "localhost:8091"
 	#>
 	#EndRegion comments
+
+	# We should have a form data processor function but for now we'll do this in-line:
+
+	# Convert the request body from JSON and select the formdata property (this will be something like: "username=abc1234&checkbox=on")
+	$FormData = ($SignalEvent.Request.Body | ConvertFrom-Json).formdata
+	# Create a PSCustomObject to pass to the associated worker script:
+	$FormDataObject = [PSCustomObject]@{
+	}
+	# Populate it by parsing the formdata string:
+	$FormData -split "&" | ForEach-Object {
+		$FormItem = $_ -split "="
+		$FormDataObject | Add-Member -MemberType NoteProperty -Name $FormItem[0] -Value $FormItem[1]
+	}
+
+	# Initate the worker script:
+	Invoke-PodeSchedule -Name 'get-user-details' -ArgumentList @{ ClientId = $SignalEvent.ClientId; FormData = $FormDataObject }
 
 	# Send a websocket message back to the originating client to say we've started though at the moment the frontend
 	# isn't doing anything with this data:
@@ -80,7 +83,7 @@ Add-PodeRoute -Method Post -Path '/get-user-details' -ScriptBlock {
 			datetime        = $Date
 			data            = $WebEvent.Data
 			taskarraytohtml = $taskarraytohtml
-		}
+		} -ClientId $WebEvent.Data.clientid
 	}
 	else
 	{
@@ -88,6 +91,6 @@ Add-PodeRoute -Method Post -Path '/get-user-details' -ScriptBlock {
 		Send-PodeSignal -Value @{
 			datetime = $Date
 			data     = $WebEvent.Data
-		}
+		} -ClientId $WebEvent.Data.clientid
 	}
 }

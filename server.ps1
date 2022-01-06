@@ -20,7 +20,6 @@ Start-PodeServer {
 
 	########################################################################################
 	#Region Additional state objects
-	Set-PodeState -Name 'ClientIDs' -Value @{'IDs' = @() } | Out-Null
 	#EndRegion Additional state objects
 
 	########################################################################################

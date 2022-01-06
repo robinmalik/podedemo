@@ -1,5 +1,13 @@
 return {
-	Write-Host "get-user-details.ps1"
+	param(
+		$ClientId,
+		$FormData
+	)
+
+	# NOTE: Param block should have validation rules where possible, though if for convenience in the route
+	# definitions we just pass all form data, then we may have to validate within this script rather than in
+	# the param block. Another option could be some Pode middleware that parsed form data before even reaching
+	# the route.
 
 	$ApplicationRoot = (Get-PodeState -Name ApplicationRoot).ApplicationRoot
 
@@ -25,12 +33,12 @@ return {
 	# Define a data structure to represent what we're doing. We will periodically post this (and other JSON) to the server
 	# which will then broadcast this over the websocket:
 	$Data = [PSCustomObject]@{
-		clientid  = $Null
+		clientid  = $ClientId
 		name      = 'initialtasklist'
 		state     = 'running'
 		status    =	''
 		taskarray = @(
-			[PSCustomObject]@{'taskname' = 'Get user from Active Directory'; 'state' = ''; 'notes' = 'maybe some other information here?' }
+			[PSCustomObject]@{'taskname' = "Get user '$($FormData.username)' from Active Directory"; 'state' = ''; 'notes' = 'maybe some other information here?' }
 			[PSCustomObject]@{'taskname' = 'Connect to Exchange Online'; 'state' = '' }
 			[PSCustomObject]@{'taskname' = 'Get User Mailbox'; 'state' = '' }
 		)
@@ -43,13 +51,17 @@ return {
 	# Simulate some tasks:
 	foreach($Task in $Data.taskarray)
 	{
-		# Set the task state to running (note: $Data is updated too when we do this)
+		# Append the clientid to the task so we can be sure to send information to the right client:
+		$task | Add-Member -MemberType NoteProperty -Name 'clientid' -Value $ClientId -Force
+
+		# Set the task state to running (note: $Data is updated too when we do this):
 		$task | Add-Member -MemberType NoteProperty -Name 'state' -Value 'running' -Force
-		# Pass $Task back to inform the client this particular task is running (i.e. we are not sending the entire $Data object - though we could):
+
+		# Pass $Task back to inform the client this particular task is running (i.e. we are not sending the entire $Data object - we could but this approach eases things in the frontend JS a little):
 		Invoke-RestMethod "http://$((Get-PodeConfig).Url):$((Get-PodeConfig).Port)/get-user-details" -Method Post -Body $($Task | ConvertTo-Json -Compress) -UseBasicParsing -ContentType "application/json"
 
 		# Simulate running the task
-		Start-Sleep -Seconds 1
+		Start-Sleep -Seconds 2
 
 		# Set state to completed and tell the front end we have completed this task:
 		$task.state = 'completed'
